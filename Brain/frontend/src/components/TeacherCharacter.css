@@ -1,4 +1,4 @@
-/* ── Teacher character wrapper ───────────────────────────────────────────── */
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
 
 .tc-root {
   position: absolute;
@@ -8,88 +8,90 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  /* drop shadow so character floats above the board */
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
+  gap: 2px;
+  filter:
+    drop-shadow(0 4px 12px rgba(0,0,0,0.5))
+    drop-shadow(0 0 28px rgba(120, 53, 15, 0.25));
   user-select: none;
 }
 
-/* ── State animations ───────────────────────────────────────────────────── */
+/* ── Body animations per state ───────────────────────────────────────────── */
 
 .tc-idle {
-  animation: tcFloat 3s ease-in-out infinite;
+  animation: tcFloat 3.2s ease-in-out infinite;
 }
 
 .tc-speaking {
-  animation: tcBob 0.48s ease-in-out infinite alternate;
+  animation: tcBob 0.46s ease-in-out infinite alternate;
 }
 
 .tc-pointing {
-  animation: tcFloat 3s ease-in-out infinite;
+  animation: tcFloat 3.2s ease-in-out infinite;
 }
 
 @keyframes tcFloat {
   0%,  100% { transform: translateY(0px); }
-  50%       { transform: translateY(-7px); }
+  50%       { transform: translateY(-8px); }
 }
 
 @keyframes tcBob {
-  from { transform: translateY(0px) rotate(-1deg); }
-  to   { transform: translateY(-4px) rotate(1deg); }
+  from { transform: translateY(0px)  rotate(-1.2deg); }
+  to   { transform: translateY(-5px) rotate(1.2deg);  }
 }
 
-/* ── Eye blink ──────────────────────────────────────────────────────────── */
+/* ── Eye blink (applied to <g> groups wrapping each eye) ─────────────────── */
 
-.tc-eye {
-  transform-origin: center;
-  animation: tcBlink 5s ease-in-out infinite;
+.tc-eye-l,
+.tc-eye-r {
+  animation: tcBlink 5.5s ease-in-out infinite;
 }
 
-.tc-eye:nth-of-type(2) {
-  animation-delay: 0.05s;
+.tc-eye-r {
+  animation-delay: 0.06s;
 }
 
 @keyframes tcBlink {
-  0%, 88%, 100% { transform: scaleY(1); }
-  92%           { transform: scaleY(0.08); }
+  0%, 86%, 100% { transform: scaleY(1); }
+  91%           { transform: scaleY(0.06); }
 }
 
-/* ── Mouth speaking animation ───────────────────────────────────────────── */
+/* ── Mouth open (speaking) ───────────────────────────────────────────────── */
 
 .tc-mouth-open {
-  animation: tcMouth 0.35s ease-in-out infinite alternate;
+  animation: tcMouthPulse 0.32s ease-in-out infinite alternate;
 }
 
-@keyframes tcMouth {
-  from { ry: 2; }
-  to   { ry: 6; }
+@keyframes tcMouthPulse {
+  from { ry: 3; }
+  to   { ry: 7; }
 }
 
-/* ── Speaking wave bars ─────────────────────────────────────────────────── */
+/* ── Voice wave bars ─────────────────────────────────────────────────────── */
 
 .tc-wave {
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   gap: 3px;
-  height: 18px;
-  margin-bottom: 4px;
+  height: 20px;
+  margin-bottom: 2px;
 }
 
 .tc-wave span {
   display: block;
   width: 4px;
   border-radius: 2px;
-  background: #818cf8;
-  animation: tcWaveBar 0.6s ease-in-out infinite alternate;
+  background: linear-gradient(to top, #818cf8, #c4b5fd);
+  animation: tcBar 0.55s ease-in-out infinite alternate;
 }
 
 .tc-wave span:nth-child(1) { animation-delay: 0.00s; height: 8px;  }
-.tc-wave span:nth-child(2) { animation-delay: 0.10s; height: 14px; }
-.tc-wave span:nth-child(3) { animation-delay: 0.20s; height: 18px; }
-.tc-wave span:nth-child(4) { animation-delay: 0.10s; height: 14px; }
+.tc-wave span:nth-child(2) { animation-delay: 0.11s; height: 14px; }
+.tc-wave span:nth-child(3) { animation-delay: 0.22s; height: 20px; }
+.tc-wave span:nth-child(4) { animation-delay: 0.11s; height: 14px; }
 .tc-wave span:nth-child(5) { animation-delay: 0.00s; height: 8px;  }
 
-@keyframes tcWaveBar {
-  from { transform: scaleY(0.3); opacity: 0.5; }
-  to   { transform: scaleY(1);   opacity: 1;   }
+@keyframes tcBar {
+  from { transform: scaleY(0.25); opacity: 0.45; }
+  to   { transform: scaleY(1);    opacity: 1;    }
 }
