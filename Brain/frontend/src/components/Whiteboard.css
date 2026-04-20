@@ -8,6 +8,7 @@
   overflow: hidden;
   height: 100%;
   border: 1px solid #1a1a38;
+  position: relative; /* anchor for TeacherCharacter */
 }
 
 .whiteboard-empty {
@@ -76,7 +77,9 @@
   justify-content: center;
   position: relative;
   padding: 24px;
-  overflow: hidden;
+  /* overflow visible so banner + teacher aren't clipped by this layer;
+     the outer .whiteboard (overflow:hidden) still clips at the card edge */
+  overflow: visible;
 }
 
 .wb-grid-wrap {

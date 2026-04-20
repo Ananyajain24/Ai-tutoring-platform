@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { compileGrid } from '../lib/gridCompiler.js';
 import InteractionPrompt from './InteractionPrompt.jsx';
+import TeacherBanner from './TeacherBanner.jsx';
+import TeacherCharacter from './TeacherCharacter.jsx';
 import './Whiteboard.css';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -79,10 +81,12 @@ export default function Whiteboard({ result, problem }) {
   const [cursor,      setCursor]      = useState(null);   // { row, col } | null
   const [finalAnswer, setFinalAnswer] = useState(null);
   const [interaction, setInteraction] = useState(null);
-  const [isRunning,   setIsRunning]   = useState(false);
-  const [voiceOn,     setVoiceOn]     = useState(true);
-  const [methodLabel, setMethodLabel] = useState('');
+  const [isRunning,    setIsRunning]    = useState(false);
+  const [voiceOn,      setVoiceOn]      = useState(true);
+  const [methodLabel,  setMethodLabel]  = useState('');
   const [compileError, setCompileError] = useState(null);
+  const [explanation,  setExplanation]  = useState('');
+  const [teacherState, setTeacherState] = useState('idle');
 
   const cancelRef = useRef(false);
   const voiceRef  = useRef(true);
@@ -148,14 +152,28 @@ export default function Whiteboard({ result, problem }) {
       case 'move_cursor':   await moveCursor(action.row, action.col); break;
       case 'write_digit':   await writeDigit(action.row, action.col, action.value, action.isOperator); break;
       case 'write_carry':   await writeCarry(action.row, action.col, action.value); break;
-      case 'highlight':     await highlight(action.cells, action.color); break;
-      case 'clear_highlight': await clearHighlight(); break;
+      case 'highlight':
+        setTeacherState('pointing');
+        await highlight(action.cells, action.color);
+        break;
+      case 'clear_highlight':
+        setTeacherState('idle');
+        await clearHighlight();
+        break;
       case 'draw_line':     setShowLine(true); await sleep(400); break;
-      case 'speak':         await speakAndWait(action.text, voiceRef); break;
+      case 'speak':
+        setExplanation(action.text);
+        setTeacherState('speaking');
+        await speakAndWait(action.text, voiceRef);
+        setTeacherState('idle');
+        break;
       case 'pause':         await sleep(action.ms); break;
       case 'show_answer':   setFinalAnswer(action.value); break;
       case 'ask':
+        setTeacherState('speaking');
+        setExplanation(action.question);
         await askStudent(action.question, action.answer, action.hint);
+        setTeacherState('idle');
         setInteraction(null);
         break;
     }
@@ -184,6 +202,8 @@ export default function Whiteboard({ result, problem }) {
       setInteraction(null);
       setCursor(null);
       setCompileError(null);
+      setExplanation('');
+      setTeacherState('idle');
       setMethodLabel(result.method ?? '');
 
       try {
@@ -230,6 +250,9 @@ export default function Whiteboard({ result, problem }) {
 
       {/* Grid */}
       <div className="wb-board">
+        {/* Explanation banner — top-center of board */}
+        <TeacherBanner text={explanation} />
+
         {compileError && (
           <div style={{ color: '#f472b6', fontSize: 13, textAlign: 'center', padding: '12px' }}>
             Could not render grid: {compileError}
@@ -293,6 +316,9 @@ export default function Whiteboard({ result, problem }) {
           />
         )}
       </div>
+
+      {/* AI teacher character — bottom-right corner */}
+      <TeacherCharacter state={teacherState} />
     </div>
   );
 }

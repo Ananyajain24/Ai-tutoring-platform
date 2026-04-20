@@ -1,0 +1,95 @@
+/* ── Teacher character wrapper ───────────────────────────────────────────── */
+
+.tc-root {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  /* drop shadow so character floats above the board */
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
+  user-select: none;
+}
+
+/* ── State animations ───────────────────────────────────────────────────── */
+
+.tc-idle {
+  animation: tcFloat 3s ease-in-out infinite;
+}
+
+.tc-speaking {
+  animation: tcBob 0.48s ease-in-out infinite alternate;
+}
+
+.tc-pointing {
+  animation: tcFloat 3s ease-in-out infinite;
+}
+
+@keyframes tcFloat {
+  0%,  100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+@keyframes tcBob {
+  from { transform: translateY(0px) rotate(-1deg); }
+  to   { transform: translateY(-4px) rotate(1deg); }
+}
+
+/* ── Eye blink ──────────────────────────────────────────────────────────── */
+
+.tc-eye {
+  transform-origin: center;
+  animation: tcBlink 5s ease-in-out infinite;
+}
+
+.tc-eye:nth-of-type(2) {
+  animation-delay: 0.05s;
+}
+
+@keyframes tcBlink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92%           { transform: scaleY(0.08); }
+}
+
+/* ── Mouth speaking animation ───────────────────────────────────────────── */
+
+.tc-mouth-open {
+  animation: tcMouth 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes tcMouth {
+  from { ry: 2; }
+  to   { ry: 6; }
+}
+
+/* ── Speaking wave bars ─────────────────────────────────────────────────── */
+
+.tc-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+  margin-bottom: 4px;
+}
+
+.tc-wave span {
+  display: block;
+  width: 4px;
+  border-radius: 2px;
+  background: #818cf8;
+  animation: tcWaveBar 0.6s ease-in-out infinite alternate;
+}
+
+.tc-wave span:nth-child(1) { animation-delay: 0.00s; height: 8px;  }
+.tc-wave span:nth-child(2) { animation-delay: 0.10s; height: 14px; }
+.tc-wave span:nth-child(3) { animation-delay: 0.20s; height: 18px; }
+.tc-wave span:nth-child(4) { animation-delay: 0.10s; height: 14px; }
+.tc-wave span:nth-child(5) { animation-delay: 0.00s; height: 8px;  }
+
+@keyframes tcWaveBar {
+  from { transform: scaleY(0.3); opacity: 0.5; }
+  to   { transform: scaleY(1);   opacity: 1;   }
+}

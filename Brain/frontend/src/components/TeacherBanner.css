@@ -1,0 +1,55 @@
+/* ── Floating explanation banner ─────────────────────────────────────────── */
+
+.tb-wrap {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  background: #fffdf4;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 16px;
+  padding: 11px 18px;
+  max-width: 440px;
+  min-width: 200px;
+
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.12),
+    0 4px 20px rgba(251, 191, 36, 0.18),
+    0 8px 40px rgba(0, 0, 0, 0.25);
+
+  /* New key = remount = animation fires fresh */
+  animation: tbSlideIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  pointer-events: none;
+}
+
+.tb-quill {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.tb-text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #1e1b4b;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+}
+
+@keyframes tbSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
