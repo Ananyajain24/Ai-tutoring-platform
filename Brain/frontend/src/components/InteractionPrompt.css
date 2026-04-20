@@ -1,0 +1,121 @@
+.ip-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 30, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  backdrop-filter: blur(3px);
+  animation: ipFadeIn 0.25s ease;
+}
+
+.ip-card {
+  background: #1e1e3f;
+  border: 1px solid #4f46e5;
+  border-radius: 16px;
+  padding: 28px 32px;
+  width: min(400px, 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.ip-icon {
+  font-size: 32px;
+  text-align: center;
+}
+
+.ip-question {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.ip-hint {
+  font-size: 13px;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-left: 3px solid #fbbf24;
+  padding: 8px 12px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.5;
+  animation: ipFadeIn 0.2s ease;
+}
+
+.ip-form {
+  display: flex;
+  gap: 8px;
+}
+
+.ip-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: #12122a;
+  border: 1px solid #3d3d5c;
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.ip-input:focus { border-color: #4f46e5; }
+.ip-input.ip-wrong   { border-color: #ef4444; animation: shake 0.3s ease; }
+.ip-input.ip-correct { border-color: #34d399; }
+
+.ip-submit {
+  padding: 10px 16px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.ip-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.ip-submit:not(:disabled):hover { opacity: 0.85; }
+
+.ip-feedback-wrong   { font-size: 13px; color: #f87171; text-align: center; }
+.ip-feedback-correct { font-size: 13px; color: #34d399; text-align: center; font-weight: 600; }
+
+.ip-hint-btn {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.ip-skip {
+  background: none;
+  border: none;
+  color: #555577;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  padding: 0;
+  transition: color 0.15s;
+}
+.ip-skip:hover { color: #94a3b8; }
+
+@keyframes ipFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-6px); }
+  75%       { transform: translateX(6px); }
+}

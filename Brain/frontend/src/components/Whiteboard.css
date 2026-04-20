@@ -1,0 +1,240 @@
+/* ── Shell ───────────────────────────────────────────────────────────────── */
+
+.whiteboard {
+  display: flex;
+  flex-direction: column;
+  background: #0c0c1e;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 100%;
+  border: 1px solid #1a1a38;
+}
+
+.whiteboard-empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.wb-placeholder {
+  text-align: center;
+  color: #3a3a66;
+}
+.wb-ph-icon { font-size: 52px; display: block; margin-bottom: 14px; }
+.wb-placeholder p { font-size: 14px; line-height: 1.6; }
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+.wb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #08081a;
+  border-bottom: 1px solid #1a1a38;
+  flex-shrink: 0;
+}
+
+.wb-method {
+  font-size: 12px;
+  font-weight: 600;
+  color: #818cf8;
+  background: rgba(129,140,248,0.1);
+  border: 1px solid rgba(129,140,248,0.2);
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+.wb-controls { display: flex; align-items: center; gap: 8px; }
+
+.wb-ctrl {
+  background: none;
+  border: 1px solid #1a1a38;
+  border-radius: 6px;
+  color: #44447a;
+  font-size: 14px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.wb-ctrl:hover { border-color: #818cf8; color: #818cf8; }
+
+.wb-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  animation: pulse 1.2s infinite;
+}
+
+/* ── Board ───────────────────────────────────────────────────────────────── */
+
+.wb-board {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.wb-grid-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ── Grid ────────────────────────────────────────────────────────────────── */
+
+.wb-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Separator drawn between multiplier row and result row */
+.wb-grid-line {
+  height: 2px;
+  background: linear-gradient(to right, transparent, #4a4a88, transparent);
+  margin: 6px 0;
+  animation: fadeIn 0.35s ease;
+}
+
+/* ── Rows ────────────────────────────────────────────────────────────────── */
+
+.gr {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  justify-content: flex-end; /* right-align for number columns */
+}
+
+.gr-carry {
+  min-height: 22px;
+}
+
+/* ── Cells ───────────────────────────────────────────────────────────────── */
+
+.gc {
+  width: 48px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  position: relative;
+  transition: background 0.2s ease;
+  background: transparent;
+}
+
+/* Carry row cells are smaller */
+.gc-carry-row {
+  height: 22px;
+  width: 48px;
+}
+
+/* Cursor highlight */
+.gc-cursor {
+  outline: 2px solid #818cf8;
+  outline-offset: -2px;
+  border-radius: 6px;
+  animation: cursorBlink 0.9s step-end infinite;
+}
+
+/* Highlighted cell */
+.gc-hl {
+  background: color-mix(in srgb, var(--hl, #fbbf24) 18%, transparent);
+  outline: 1.5px solid var(--hl, #fbbf24);
+  outline-offset: -1.5px;
+}
+
+/* Operator cell (×, |) */
+.gc-operator {
+  color: #6366f1;
+}
+
+/* Divider | column */
+.gc-divider {
+  width: 20px;
+  color: #3a3a66;
+}
+
+/* ── Text inside cells ───────────────────────────────────────────────────── */
+
+.gc-digit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.gc-hl .gc-digit {
+  color: var(--hl, #fbbf24);
+}
+
+.gc-operator .gc-digit {
+  font-size: 20px;
+  color: #6366f1;
+}
+
+/* Carry row digit (small) */
+.gc-small {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f472b6;
+  line-height: 1;
+}
+
+/* ── Final answer ────────────────────────────────────────────────────────── */
+
+.wb-answer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 28px;
+  background: rgba(96,165,250,0.07);
+  border: 1px solid rgba(96,165,250,0.22);
+  border-radius: 12px;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wb-answer-eq {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  color: #4a4a88;
+}
+
+.wb-answer-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.06em;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+
+@keyframes pulse {
+  0%,100% { opacity: 1;   transform: scale(1);   }
+  50%     { opacity: 0.3; transform: scale(0.75); }
+}
+
+@keyframes cursorBlink {
+  0%,100% { outline-color: #818cf8; }
+  50%     { outline-color: transparent; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
